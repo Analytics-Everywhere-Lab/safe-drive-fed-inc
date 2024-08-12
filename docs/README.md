@@ -7,6 +7,7 @@ The enforcement of driver safety recommendations requires an approach that ensur
 ## Overview
 We present a client-server safety monitoring approach that detects up to 6 classes of user actions: no seatbelt, mobile (phone usage), inattentive, seatbelt, drowsiness, and drinking. Our current design involves two client devices representing the vehicles' onboard edge devices and a single server coordinating the training.
 - Insert dataset images - Figure 2
+  
 The setup initially accommodates two classes and the model is trained on these two classes. In later steps, more classes are added (one class for each step) and the model is trained using incremental learning to accommodate the new classes. Each training step includes a federated learning process between the client devices and the server that enables local models to be improved and fine-tuned to user data while maintaining data privacy. 
 - Insert overview diagram - Figure 1
 

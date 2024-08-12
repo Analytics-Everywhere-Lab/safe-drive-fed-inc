@@ -1,0 +1,6 @@
+no_seatbelt
+mobile
+inattentive
+seatbelt
+drowsiness
+drinking

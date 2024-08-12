@@ -1,7 +1,0 @@
-names:
-- no_seatbelt
-- seatbelt
-nc: 2
-train: "/Users/aashishmamgain/Downloads/EdgeAI/Project-2/dataset/training/train/images"
-val: "/Users/aashishmamgain/Downloads/EdgeAI/Project-2/dataset/training/val/images"
-test: "/Users/aashishmamgain/Downloads/EdgeAI/Project-2/dataset/training/test/images"

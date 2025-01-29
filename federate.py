@@ -1,8 +1,13 @@
 import torch
 from ultralytics import YOLO
 import os
+import argparse
 
-num_clients = 2
+parser = argparse.ArgumentParser()
+parser.add_argument("--num_clients", default=2, type=int)
+args = parser.parse_args()
+
+num_clients = args.num_clients
 client_models = {}
 
 # Get local model
@@ -25,7 +30,14 @@ client_models = {}
 
 # Load local models
 print("Loading local models")
-client_models = {}
+client_models = {} 
+
+# Write code to get the size of data in the client
+# sample_counts = []
+# for client_id, (state_dict, count) in enumerate(client_updates):
+    # num_samples = len(train_dataset)
+    # return trained_model, num_samples
+
 for i in range(num_clients):
     client_models[f'{i+1}'] = YOLO(f'client{i+1}/saved_model/yolo-last.pt')
 

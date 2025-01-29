@@ -1,0 +1,17 @@
+1. Sort Classes: 
+- Separate the files in sorted dataset into respective images and labels subfolders
+- Keeps them in sorted dataset
+
+2. Create Rounds: 
+- Converts the dataset into a dataset with incremental rounds 
+- Saves the dataset as sorted dataset
+
+3. Filter Labels: 
+- In an incremental round, ensure only the valid labels are included for the round
+- Manually changes the code for round_{} in the sorted dataset
+
+4. Train Test Split
+
+5. Manually move the rounds into the client incremental dataset (to be automated)
+
+6. Clean up sorted_dataset

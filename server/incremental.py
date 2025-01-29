@@ -12,7 +12,7 @@ parser.add_argument("--classes_list", nargs="+")
 args = parser.parse_args()
 
 config_path = 'server/config/train.yaml'
-epochs = 100
+epochs = 1 # replace with 100
 
 yaml_file_path = 'server/config/train.yaml'
 base_dataset_path = '../../incremental_dataset'

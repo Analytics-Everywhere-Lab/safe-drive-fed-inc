@@ -8,4 +8,4 @@ names:
 nc: 6
 test: ../../incremental_dataset/round_5/test/images
 train: ../../incremental_dataset/round_5/train/images
-val: ../../incremental_dataset/round_5/test/images
+val: ../../incremental_dataset/round_5/val/images

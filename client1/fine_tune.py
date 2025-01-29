@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import os
 import argparse
 
-epochs = 50
+epochs = 1
 image_size = 640
 
 parser = argparse.ArgumentParser(description="Fine-tuning")

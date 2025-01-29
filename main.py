@@ -8,28 +8,24 @@ import os
 import yaml
 import shutil
 
-def deploy():
+def deploy(num_clients):
     server_model_path = 'server/saved_model/yolo-last.pt'
     server_config_path = 'server/config/train.yaml' 
 
-    client1_model_path = 'client1/saved_model/yolo-last.pt'
-    client1_config_path = 'client1/config/train.yaml'
-
-    client2_model_path = 'client2/saved_model/yolo-last.pt'
-    client2_config_path = 'client2/config/train.yaml'
-
-    os.makedirs(os.path.dirname(client1_model_path), exist_ok=True)
-    os.makedirs(os.path.dirname(client1_config_path), exist_ok=True)
-    os.makedirs(os.path.dirname(client2_model_path), exist_ok=True)
-    os.makedirs(os.path.dirname(client2_config_path), exist_ok=True)
-
-    shutil.copy(server_model_path, client1_model_path)
-    shutil.copy(server_config_path, client1_config_path)
-    print(f"Deployed {server_model_path} to {client1_model_path}")
-
-    shutil.copy(server_model_path, client2_model_path)
-    shutil.copy(server_config_path, client2_config_path)
-    print(f"Deployed {server_model_path} to {client2_model_path}")
+    for i in range(1, num_clients + 1):
+            # Dynamically create client paths
+            client_model_path = f'client{i}/saved_model/yolo-last.pt'
+            client_config_path = f'client{i}/config/train.yaml'
+            
+            # Ensure the directory for the client's model and config paths exists
+            os.makedirs(os.path.dirname(client_model_path), exist_ok=True)
+            os.makedirs(os.path.dirname(client_config_path), exist_ok=True)
+            
+            # Copy server model and config to the client paths
+            shutil.copy(server_model_path, client_model_path)
+            shutil.copy(server_config_path, client_config_path)
+            print(f"Deployed {server_model_path} to {client_model_path}")
+            print(f"Deployed {server_config_path} to {client_config_path}")
 
 def fine_tune(NUM_CLIENTS, id, if_fed):
     for i in range(NUM_CLIENTS):
@@ -38,30 +34,30 @@ def fine_tune(NUM_CLIENTS, id, if_fed):
         os.rename("runs/detect/train", f"runs/detect/{id}_fine_tune_client{i+1}")
         print(f'Saved at runs/detect/{id}_fine_tune_client{i+1}')
 
-def federate(NUM_ROUNDS, id):
+def federate(NUM_CLIENTS, NUM_ROUNDS, id):
     id = id + '_fed' 
     for i in range(NUM_ROUNDS):
         print(f"Incremental {id}, Round {i} of federated learning")
-        os.system("python3 federate.py")
+        os.system("python3 federate.py --num_clients")
         # Fine tune client models in each round
         id = id + str(i+1)       
-        fine_tune(NUM_CLIENTS=2, id=id, if_fed=1)
+        fine_tune(NUM_CLIENTS, id=id, if_fed=1)
 
-NUM_CLIENTS = 2
+NUM_CLIENTS = 3
 
 # Init training
 print('Training initial round')
-os.system("python3 server/scripts/train.py --config config/train.yaml --epochs 100 --image_size 640 --init True")
+os.system("python3 server/scripts/train.py --config config/train.yaml --epochs 1 --image_size 640 --init True")
 os.rename("runs/detect/train", "runs/detect/init")
 print(f'Saved at runs/detect/init')
 
-deploy()
+deploy(NUM_CLIENTS)
 
 # Fine tune client models - MODIFY TO ALLOW EACH EXECUTE ASYNCHRONOUSLY IF NECESSARY
 fine_tune(NUM_CLIENTS, id='init', if_fed=0)
 
 # Federated learning
-federate(NUM_ROUNDS=5, id='init')
+federate(NUM_CLIENTS, NUM_ROUNDS=1, id='init') #replace with 5
 
 # Incremental learning
 rounds = {
@@ -83,10 +79,10 @@ for round_name, classes_list in rounds.items():
     print(f'Saved at runs/detect/{round_name}')
 
     # Deploy to the clients
-    deploy()
+    deploy(NUM_CLIENTS)
 
     # Fine-tune client models
     fine_tune(NUM_CLIENTS, id=round_name, if_fed=0)
 
     # Repeat federated learning
-    federate(NUM_ROUNDS=5, id=round_name)
+    federate(NUM_CLIENTS, NUM_ROUNDS=1, id=round_name) #replace with 5

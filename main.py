@@ -35,7 +35,11 @@ def deploy(num_clients):
 def fine_tune(NUM_CLIENTS, id, if_fed):
     for i in range(NUM_CLIENTS):
         print(f"Fine-tuning Client {i+1}")
-        os.system(f"python3 client{i+1}/fine_tune.py --if_fed {if_fed}")
+        try:
+            os.system(f"python3 client{i+1}/fine_tune.py --if_fed {if_fed}")
+        except Exception as e:
+            print(f"Error while fine-tuning client{i+1}: {e}")
+            sys.exit(1)
         os.rename("runs/detect/train", f"runs/detect/{id}_fine_tune_client{i+1}")
         print(f'Saved at runs/detect/{id}_fine_tune_client{i+1}')
 

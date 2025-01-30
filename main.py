@@ -23,10 +23,12 @@ def deploy():
     os.makedirs(os.path.dirname(client2_model_path), exist_ok=True)
     os.makedirs(os.path.dirname(client2_config_path), exist_ok=True)
 
-    shutil.copy(server_model_path, client1_model_path)
+    # Replace these with scp commands to deploy to remote clients
+    shutil.copy(server_model_path, client1_model_path) 
     shutil.copy(server_config_path, client1_config_path)
     print(f"Deployed {server_model_path} to {client1_model_path}")
 
+    # Replace these with scp commands to deploy to remote clients
     shutil.copy(server_model_path, client2_model_path)
     shutil.copy(server_config_path, client2_config_path)
     print(f"Deployed {server_model_path} to {client2_model_path}")
@@ -34,7 +36,12 @@ def deploy():
 def fine_tune(NUM_CLIENTS, id, if_fed):
     for i in range(NUM_CLIENTS):
         print(f"Fine-tuning Client {i+1}")
+
+        # Trigger fine-tuning by running files on client. Should be done asynchronously
+        # Replace the {} with the appropriate arguments for the clients
         os.system(f"python3 client{i+1}/fine_tune.py --if_fed {if_fed}")
+
+        # Include a test condition to check if the model has been saved and then move it to the server
         os.rename("runs/detect/train", f"runs/detect/{id}_fine_tune_client{i+1}")
         print(f'Saved at runs/detect/{id}_fine_tune_client{i+1}')
 

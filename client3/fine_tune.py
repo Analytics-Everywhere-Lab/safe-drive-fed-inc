@@ -2,13 +2,14 @@ from ultralytics import YOLO
 import os 
 import argparse
 
-epochs = 1
 image_size = 640
 
 parser = argparse.ArgumentParser(description="Fine-tuning")
 parser.add_argument("--if_fed", default='0')
+parser.add_argument("--epochs", type=int, default=50)
 args = parser.parse_args()
 
+epochs = args.epochs
 config_file = os.path.join(os.getcwd(), "client3/config/train.yaml")
 # Override the global YOLO settings
 os.environ["YOLO_CONFIG_DIR"] = config_file

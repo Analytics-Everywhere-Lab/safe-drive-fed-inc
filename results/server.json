@@ -1,0 +1,1 @@
+{"round_1": {"map50": 0.9863, "precision": 0.9387, "recall": 0.9981}, "round_2": {"map50": 0.9711, "precision": 0.9616, "recall": 0.9592}, "round_3": {"map50": 0.9457, "precision": 0.9329, "recall": 0.9375}, "round_4": {"map50": 0.9625, "precision": 0.9376, "recall": 0.9487}, "round_5": {"map50": 0.9506, "precision": 0.9318, "recall": 0.9638}}

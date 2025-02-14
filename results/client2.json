@@ -1,0 +1,22 @@
+{
+    "round_1": {
+        "No_FL": {"map50": 0.6656, "precision": 0.7564, "recall": 0.7}, 
+        "FL": {"map50": 0.896, "precision": 0.8285, "recall": 0.9}
+    }, 
+    "round_2": {
+        "No_FL": {"map50": 0.9617, "precision": 0.9088, "recall": 0.9572}, 
+        "FL": {"map50": 0.9488, "precision": 0.9563, "recall": 0.9354}
+    }, 
+    "round_3": {
+        "No_FL": {"map50": 0.9541, "precision": 0.8696, "recall": 0.9521}, 
+        "FL": {"map50": 0.9599, "precision": 0.8845, "recall": 0.9821}
+    }, 
+    "round_4": {
+        "No_FL": {"map50": 0.6907, "precision": 0.6646, "recall": 0.626}, 
+        "FL": {"map50": 0.6603, "precision": 0.626, "recall": 0.599}
+    }, 
+    "round_5": {
+        "No_FL": {"map50": 0.8379, "precision": 0.8404, "recall": 0.7982}, 
+        "FL": {"map50": 0.828, "precision": 0.8058, "recall": 0.8704}
+    }
+}

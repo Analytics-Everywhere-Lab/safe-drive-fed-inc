@@ -12,7 +12,6 @@ parser.add_argument("--classes_list", nargs="+")
 args = parser.parse_args()
 
 config_path = 'server/config/train.yaml'
-epochs = 1 # replace with 100
 
 yaml_file_path = 'server/config/train.yaml'
 base_dataset_path = '../../incremental_dataset'
@@ -52,4 +51,5 @@ with open(yaml_file_path, 'w') as file:
 # 2. Freeze some layers of the model to preserve knowledge or progressively unfreeze - SKIP THIS (SERVER HAS ENOUGH COMPUTE)
 
 # 3. Send selected model to train.py as an argument 
+epochs = 100
 os.system(f"python3 server/scripts/train.py --config config/train.yaml --model {model} --epochs {epochs} --image_size 640 --init False")

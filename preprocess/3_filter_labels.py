@@ -18,10 +18,10 @@ def filter_labels(file_path, allowed_prefixes):
 # Dictionary mapping round numbers to their allowed prefixes
 round_prefixes = {
     1: ['0', '1'],
-    2: ['2'],
-    3: ['3'],
-    4: ['4'],
-    5: ['5']
+    2: ['0', '1', '2'],
+    3: ['0', '1', '2', '3'],
+    4: ['0', '1', '2', '3', '4'],
+    5: ['0', '1', '2', '3', '4', '5']
 }
 
 # Iterate over each round and process the labels

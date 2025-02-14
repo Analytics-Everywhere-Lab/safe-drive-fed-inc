@@ -1,0 +1,9 @@
+names:
+- no_seatbelt
+- mobile
+- inattentive
+- seatbelt
+nc: 4
+test: ../client4/incremental_dataset/round_3/test/images
+train: ../client4/incremental_dataset/round_3/train/images
+val: ../client4/incremental_dataset/round_3/val/images

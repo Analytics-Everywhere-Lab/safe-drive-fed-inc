@@ -1,3 +1,5 @@
+Move folders 'images' and 'labels' into dataset and run 1 to 4
+
 1. Sort Classes: 
 - Separate the files in sorted dataset into respective images and labels subfolders
 - Keeps them in sorted dataset
@@ -6,12 +8,16 @@
 - Converts the dataset into a dataset with incremental rounds 
 - Saves the dataset as sorted dataset
 
-3. Filter Labels: 
+3. Filter Labels:  
 - In an incremental round, ensure only the valid labels are included for the round
 - Manually changes the code for round_{} in the sorted dataset
 
 4. Train Test Split
+- Splits each round folder into its train, test, val
+- Moves the rounds to the client{i}/incremental_dataset
+- Cleans up the folder
 
-5. Manually move the rounds into the client incremental dataset (to be automated)
 
-6. Clean up sorted_dataset
+
+For the new v2 data, the labels have been mixed up in Roboflow. Fix the labels using check_labels.ipynb before running 1 to 5. 
+Can check using the draw bounding boxes before moving to the client 

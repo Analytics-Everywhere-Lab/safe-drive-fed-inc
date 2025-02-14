@@ -1,5 +1,6 @@
 import yaml
 import shutil
+import os 
 
 source_file_path = 'init.yaml'
 
@@ -27,3 +28,9 @@ with open(client2_dest_file_path, 'w') as file:
     yaml.safe_dump(source_data, file, default_flow_style=False)
 
 shutil.rmtree('runs/')
+
+# Remove the labels.cache files 
+for root, dirs, files in os.walk('.'):
+    for file in files:
+        if file == 'labels.cache':
+            os.remove(os.path.join(root, file))

@@ -1,7 +1,11 @@
 names:
 - no_seatbelt
 - mobile
-nc: 2
-test: ../../incremental_dataset/round_1/test/images
-train: ../../incremental_dataset/round_1/train/images
-val: ../../incremental_dataset/round_1/val/images
+- inattentive
+- seatbelt
+- drowsiness
+- drinking
+nc: 6
+test: ../../incremental_dataset/round_5/test/images
+train: ../../incremental_dataset/round_5/train/images
+val: ../../incremental_dataset/round_5/val/images

@@ -18,25 +18,26 @@ def deploy(num_clients):
     server_config_path = 'server/config/train.yaml' 
 
     for i in range(1, num_clients + 1):
-            # Dynamically create client paths
-            client_model_path = f'client{i}/saved_model/yolo-last.pt'
-            client_config_path = f'client{i}/config/train.yaml'
-            
-            # Ensure the directory for the client's model and config paths exists
-            os.makedirs(os.path.dirname(client_model_path), exist_ok=True)
-            os.makedirs(os.path.dirname(client_config_path), exist_ok=True)
-            
-            # Copy server model and config to the client paths
-            shutil.copy(server_model_path, client_model_path)
-            shutil.copy(server_config_path, client_config_path)
-            print(f"Deployed {server_model_path} to {client_model_path}")
-            print(f"Deployed {server_config_path} to {client_config_path}")
+        # Dynamically create client paths
+        client_model_path = f'client{i}/saved_model/yolo-last.pt'
+        client_config_path = f'client{i}/config/train.yaml'
+        
+        # Ensure the directory for the client's model and config paths exists
+        os.makedirs(os.path.dirname(client_model_path), exist_ok=True)
+        os.makedirs(os.path.dirname(client_config_path), exist_ok=True)
+        
+        # Copy server model and config to the client paths
+        shutil.copy(server_model_path, client_model_path)
+        shutil.copy(server_config_path, client_config_path)
+        print(f"Deployed {server_model_path} to {client_model_path}")
+        print(f"Deployed {server_config_path} to {client_config_path}")
 
 def fine_tune(NUM_CLIENTS, id, if_fed):
+    epochs = 50
     for i in range(NUM_CLIENTS):
         print(f"Fine-tuning Client {i+1}")
         try:
-            os.system(f"python3 client{i+1}/fine_tune.py --if_fed {if_fed}")
+            os.system(f"python3 client{i+1}/fine_tune.py --if_fed {if_fed} --epochs {epochs}")
         except Exception as e:
             print(f"Error while fine-tuning client{i+1}: {e}")
             sys.exit(1)
@@ -65,18 +66,19 @@ def federate(NUM_CLIENTS, NUM_ROUNDS, id):
         id = id + str(i+1)       
         fine_tune(NUM_CLIENTS, id=id, if_fed=1)
 
-NUM_CLIENTS = 3
+NUM_CLIENTS = 4
 
 # Init training
+round_name = 'round_1'
 print('Training initial round')
 try:
-    os.system("python3 server/scripts/train.py --config config/train.yaml --epochs 1 --image_size 640 --init True")
+    os.system("python3 server/scripts/train.py --config config/train.yaml --model yolo11m.pt --epochs 100 --image_size 640 --init True")
 except Exception as e:
     print(f"Error while initializing server training: {e}")
     sys.exit(1)
     
-# os.rename("runs/detect/train", "runs/detect/init") 
-print(f'Saved at runs/detect/init')
+os.rename(f'runs/detect/train', f'runs/detect/{round_name}')
+print(f'Saved at runs/detect/{round_name}')
 
 deploy(NUM_CLIENTS)
 
@@ -84,7 +86,7 @@ deploy(NUM_CLIENTS)
 fine_tune(NUM_CLIENTS, id='round_1', if_fed=0)
 
 # Federated learning
-federate(NUM_CLIENTS, NUM_ROUNDS=1, id='round_1') #replace with 5
+federate(NUM_CLIENTS, NUM_ROUNDS=5, id='round_1') #replace with 5
 
 # Incremental learning
 rounds = {
@@ -102,12 +104,12 @@ for round_name, classes_list in rounds.items():
 
     # Train on the incremented dataset
     try:
-        os.system(f"python3 server/incremental.py --round_name {round_name} --classes_list {classes_list}")
+        os.system(f'python3 server/incremental.py --round_name {round_name} --classes_list {classes_list}')
         pass
     except Exception as e:
         print(f"Error during system call: {e}")
         sys.exit(1)
-    os.rename(f"runs/detect/train", f"runs/detect/{round_name}")
+    os.rename(f'runs/detect/train', f'runs/detect/{round_name}')
     print(f'Saved at runs/detect/{round_name}')
 
     # Deploy to the clients
@@ -117,4 +119,4 @@ for round_name, classes_list in rounds.items():
     fine_tune(NUM_CLIENTS, id=round_name, if_fed=0)
 
     # Repeat federated learning
-    federate(NUM_CLIENTS, NUM_ROUNDS=1, id=round_name) #replace with 5
+    federate(NUM_CLIENTS, NUM_ROUNDS=5, id=round_name) #replace with 5
